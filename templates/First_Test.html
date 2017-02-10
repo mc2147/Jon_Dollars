@@ -1,0 +1,94 @@
+import os
+from django.shortcuts import render
+from django.contrib.auth.models import User
+from teacher_map.models import GoodDeed, Request
+from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
+
+
+def FirstPage(request):
+	
+	return render(request, "FirstPage.html")
+
+def TeacherLogin(request):
+	
+	return render(request, "TeacherLogin.html")
+
+def StudentLogin(request):
+	
+	return render(request, "StudentLogin.html")
+
+
+def Test(request):
+	with open(os.path.join(settings.BASE_DIR, "start_map/Pre_Inbox.txt"), "r") as myfile:
+		pre_inbox=myfile.read().replace('\n', '')
+
+	with open(os.path.join(settings.BASE_DIR, "start_map/Inbox.txt"), "r") as myfile:
+		inbox=myfile.read().replace('\n', '')
+
+	with open(os.path.join(settings.BASE_DIR, "start_map/Post_Inbox.txt"), "r") as myfile:
+		post_inbox=myfile.read().replace('\n', '')
+
+	teacher_inbox = request.session.get('inbox')
+	for i in sorted(teacher_inbox.keys()):
+		print(i)
+	
+	page = HttpResponse()
+	page.write(pre_inbox + inbox) #+ post_inbox)
+	buttons = '<form method = "GET" action = ""> <td><input type="submit" class="btn" value="Accept" name="A1" id="A"> <input type="submit" class="btn" value="Deny" name="D1" id="D"></td> </form>'
+	
+	
+		#print(inbox[i])
+		#print(inbox[i]["Registered"])
+
+	#for i in inbox.keys():
+	#	if inbox[str(i)]["Registered"] == False:
+	#		page.write("<tr> <td>1</td> <td>Anna</td> <td>Pitt</td> <td>35</td> <td>New York</td>" + buttons +  "</tr>")
+	#		inbox[str(i)]["Registered"] = True
+	
+	#if(request.GET.get('update')):
+	#	print("button works")
+	#	return Test(request)
+#		#for i in range(1, 11):
+		#inbox = inbox + "<tr> <td>1</td> <td>Anna</td> <td>Pitt</td> <td>35</td> <td>New York</td> <td>USA</td> </tr>"
+		#need to add unique identifier to each button and each row based on request ID
+		#	page.write("<tr> <td>1</td> <td>Anna</td> <td>Pitt</td> <td>35</td> <td>New York</td>" + buttons +  "</tr>")
+#		return page
+	if(request.GET.get("A")):
+		return page
+
+	return page
+
+#	other stuff starts here
+
+	#num = 0
+
+	#for i in sorted(inbox.keys()):
+	#	num = num + 1
+	#	context[str(num)] = i
+
+	#inbox functionality: we can loop through current requests and add an entry to context with each request
+	#how do we translate that into adding table rows to the teacher inbox?
+	#response.write? 
+	#we could write the text of the HTML page here after an "update inbox button click"
+	#save top part of HTML page as constant
+	#inbox table is variable
+	#can add a row with the desired information by looping through current requests
+		#each row must have time created, request text, points, student name, student username
+	#save bottom part of HTML page as constant
+
+	http_response_test = "this is an HttpResponse test"
+
+	if(request.GET.get('test_btn')):
+		#user = User.objects.create_user(username='test', email='test@testmail.com', password='test')
+		print("this is executing")
+		response = HttpResponse()
+		context["button_test"] = "this is a test to see if you can add text by pressing a button"
+		response.write(http_response_test)
+		return response
+
+	return render(request, "Test.html") #<- all this does is show the HTML page under templates. Can replace with HTML response 
+
+
+
+
