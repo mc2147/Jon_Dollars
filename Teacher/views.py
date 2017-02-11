@@ -82,12 +82,11 @@ def TeacherHome(request):
 			a = Student.objects.count()
 			print(a)
 
-		
-	if(request.GET.get("check_points_btn")):
-		points_id = request.REQUEST.get('id_for_points')
-		if User.objects.filter(username=440131).exists():
-			points_user = User.objects.get(username=440131)
-			points_student = Student.objects.get(user=points_user)
+	if(request.GET.get("edit_btn")):
+		edit_username = request.REQUEST.get("select")
+		points_user = User.objects.get(username=edit_username)
+		points_student = Student.objects.get(user = points_user)
+		if(edit_username):
 			if request.REQUEST.get("cust_val") != "":
 				newpoints = request.REQUEST.get("cust_val")
 				points_student.points = newpoints
@@ -103,7 +102,15 @@ def TeacherHome(request):
 				points_user.last_name = newlname
 				points_user.save()				
 				points_student.save()
-			updatecontext()
+		return HttpResponseRedirect("/teacher/home")
+
+	if(request.GET.get("delete_btn")):
+		del_username = request.REQUEST.get("select")
+		del_user = User.objects.get(username=del_username)
+		del_student = Student.objects.get(user = del_user)
+		del_student.delete()
+		return HttpResponseRedirect("/teacher/home")
+
 
 	if(request.GET.get("add_point_btn")):
 

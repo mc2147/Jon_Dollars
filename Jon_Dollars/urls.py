@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     
     #logins here
-    url(r'^login', 'StudentApp.views.FirstPage', name='Login'),
+    url(r'^login/', 'StudentApp.views.FirstPage', name='Login'),
     #url(r'^teacher/$', 'start_map.views.TeacherLogin', name='TeacherLogin'),
 	#url(r'^student/$', 'start_map.views.StudentLogin', name='StudentLogin'),
 	

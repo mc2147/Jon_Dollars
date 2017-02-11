@@ -146,8 +146,8 @@
 
       <!-- The justified navigation menu is meant for single line per list item.
            Multiple lines will require custom code not provided by Bootstrap. -->
-        <form method="GET">
-        <h3 class="text-muted">Welcome, {{Name}}! <input style="float: right;" name="logout" type="submit" class="btn" value="Logout"></input></h3>
+        <form method="GET" style="padding-bottom:5px;">
+        <h3 class="text-muted">Welcome, {{Name}}! <input style="float: right;" name="logout" type="submit" class="btn btn-danger" value="Logout"></input></h3>
         </form>
       <div class="masthead">
         <nav>
@@ -168,15 +168,44 @@
       	<div class="col-sm-6">
       	<h3>Student List</h3>
 
-      	<div class="col-sm-4">
+      	<div class="col-sm-6">
         <h4>Name</h4>
+        <form method="GET">
+        {% for name in names %}	
+        <p style="margin:0; padding:0; line-height:20px;">
+		<input type="radio" value={{name.2}} name="select" id={{name.2}} style=" margin:0; padding:0; line-height:20px; transform: scale(1)"> {{name.0}}</input>
+		</p>		
+		{% endfor %}
+		
+		<br>
+		<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary" name="modal">Edit Selected</button> 
+		<input type="submit" class="btn btn-primary" value="Delete Selected" name="delete_btn"></input>
 
-        {% for name in names %}
-        <p style="margin:0; padding:0; line-height:20px;"> {{ name.0 }}  </p>
-        {% endfor %}
-        </div>
+		<div class="modal fade" id="myModal" role="dialog">
+    		<div class="modal-dialog modal-lg">
+    			<div class="modal-content">
+        			<div class="modal-header">
+         				<button type="button" class="close" data-dismiss="modal">&times;</button>
+          				<h4 class="modal-title">Edit Student</h4>
+        			</div>
+        			<div class="modal-body">
+        			Edit Points<br>
+					<input type="integer" name="cust_val" id="cust_val"><br>
+					Edit First Name<br>	
+					<input type="text" name="new_fname" id="new_fname"><br>
+					Edit Last Name<br>	
+					<input type="text" name="new_lname" id="new_lname"><br>
+					<br>
+					<input type="submit" class="btn" value="Edit" name="edit_btn"><br>
+        			</div>
+        		</div>
+    		</div>
+  		</div>
+		</form>
+		</div>
 
-        <div class="col-sm-4">
+
+        <div class="col-sm-2">
         <h4>Points</h4>
         {% for name in names %}
         <p style="margin:0; padding:0; line-height:20px;"> {{name.1}} </p>
@@ -186,7 +215,7 @@
         <div class="col-sm-4">
         <h4>Username</h4>
         {% for name in names %}
-        <p style="margin:0; padding:0; line-height:20px;"> {{ name.2 }} </p>
+        <p style="margin:0; padding:0; line-height:20px;"> {{name.2}} </p>
         {% endfor %}
         </div>
 
@@ -238,24 +267,10 @@
 		</div>
 
 		<div class = "col-sm-3">
-			<h3>Edit Student Accounts</h3>
+			<h3>Student Teams</h3>
         	<form method = 'GET' action = "#">{% csrf_token %} 			
-				Enter Username to Edit Account<br>	
-				<input type="integer" name="id_for_points" id="id_for_points"><br>
-				Edit Points<br>
-				<input type="integer" name="cust_val" id="cust_val"><br>
-				Edit First Name<br>	
-				<input type="text" name="new_fname" id="new_fname"><br>
-				Edit Last Name<br>	
-				<input type="text" name="new_lname" id="new_lname"><br>
-	
-				<br>	
-  				<input type="submit" class="btn" value="Edit" name="check_points_btn"><br>
-  				<br>
-  				<!-- <input type="submit" class="btn" value="Add Point" name="add_point_btn" ><br> -->
-  				<br>
-  				<!-- <input type="submit" class="btn" value="Remove Point" name="remove_point_btn"> -->
-
+				Coming soon...<br>	
+				
 			</form>
 		</div>
 

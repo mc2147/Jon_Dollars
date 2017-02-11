@@ -124,7 +124,7 @@
 
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Justified Nav Template for Bootstrap</title>
+    <title>Request Inbox</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
@@ -152,10 +152,12 @@
 
       <!-- The justified navigation menu is meant for single line per list item.
            Multiple lines will require custom code not provided by Bootstrap. -->
+
+	<form method="GET" style="padding-bottom:5px;">
+        <h3 class="text-muted">Check Class Point Requests<input style="float: right;" name="logout" type="submit" class="btn btn-danger" value="Logout"></input></h3>
+    </form>
+           
       <div class="masthead">
-        <form method="GET">
-        <h3 class="text-muted">Check Class Point Requests<input style="float: right;" name="logout" type="submit" class="btn" value="Logout"></input></h3>
-        </form>
         <nav>
           <ul class="nav nav-justified"> 
           	<li><a href=home>Home</a></li>
