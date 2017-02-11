@@ -56,7 +56,7 @@ def FirstPage(request):
 def StudentHome(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)#HttpResponseRedirect('http://127.0.0.1:8000/login')
 	user = request.user
 	student = Student.objects.get(user=user)
 	points = student.points
@@ -79,8 +79,8 @@ def Team(request):
 def Shop(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
-	student_user = User.objects.get(username=440131)
+		return FirstPage(request)
+	student_user = request.user 
 	username = student_user.username
 	student = Student.objects.get(user=student_user)
 	student_name = student_user.first_name + " " + student_user.last_name
@@ -130,7 +130,7 @@ def Shop(request):
 def Inventory(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 	current_user = request.user
 	context = {}
 	context["List"] = []
@@ -152,7 +152,7 @@ def Inventory(request):
 def PointRequest(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 	studentuser = request.user
 	student = Student.objects.get(user = studentuser)
 	studentpoints = student.points
@@ -164,12 +164,6 @@ def PointRequest(request):
 		"Dollars": dollars,
 	}
 
-	#teacher_inbox = request.session['inbox']
-	#print(teacher_inbox.keys())
-	#for i in teacher_inbox.keys():
-	#	print(teacher_inbox[i])
-
-
 	if(request.GET.get("custom-request-btn")):
 		c_input = request.REQUEST.get("custom")
 		n_points = request.REQUEST.get("num_points")
@@ -177,23 +171,6 @@ def PointRequest(request):
 			new_request = Request(custom_input=c_input, points=n_points, requester_id=studentuser.username,time_created=datetime.datetime.now())
 			new_request.identifier = str(new_request.time_created)
 			new_request.save()
-	#		teacher_inbox[new_request.identifier] = {		
-	#								"Time" : str(new_request.time_created),
-	#								"Deed" : new_request.custom_input,
-	#								"Points" : new_request.points,
-	#								"Requester" : 440131,
-	#								"Registered" : False,
-	#								"Identifier" : new_request.identifier,
-	#											}
-
-	#		for i in sorted(teacher_inbox.keys()):
-	#			print(i)
-	#			print(teacher_inbox[i]["Identifier"])
-
-			#request.session.save()
-			new_request.save()
-
-
 		if c_input == "":
 			print("empty case test")
 			error = "You need to input a custom request!"
@@ -244,26 +221,7 @@ def PointRequest(request):
 				new_request.save()
 				deed_name = deed.name
 				print(deed.name + " requested")
-	#	
-	#			teacher_inbox[new_request.identifier] = {		
-	#								"Time" : str(new_request.time_created),
-	#								"Deed" : deed.name,
-	#								"Points" : new_request.points,
-	#								"Requester" : 440131,
-	#								"Registered" : False,
-	#								"Identifier" : new_request.identifier,
 	buttons()
-	#											}
-	#			request.session.save()
-
-	#		print(deed_name)
-	#		print(sorted(teacher_inbox.keys(), reverse=True))
-	#		print(len(sorted(teacher_inbox.keys(), reverse=True)))
-
-	#		for i in sorted(teacher_inbox.keys(), reverse=True):
-	#			print(teacher_inbox[i]["Identifier"])
-	#			print(str(teacher_inbox[i]["Requester"]))
-
 	return render(request, "PointRequest.html", context)
 
 
@@ -271,12 +229,10 @@ def PointRequest(request):
 def StudentSettings(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 	user = request.user
 	username=request.user.username
-
 	pword = user.password
-
 	if request.GET.get("usernamechange"):
 		p_1 = request.REQUEST.get("password")
 		p_2 = request.REQUEST.get("password_2")
@@ -284,7 +240,6 @@ def StudentSettings(request):
 		check_2 = (user.check_password(p_2))
 		if check_1 and check_2:
 			print("test")		
-
 	if request.GET.get("passwordchange"):
 		p_1 = request.REQUEST.get("password")
 		p_2 = request.REQUEST.get("password_2")

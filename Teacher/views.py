@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from .models import GoodDeed, Request, SpendRequest, Reward
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import logout
+from StudentApp.views import FirstPage
 
 
 def teacher_check(user):
@@ -15,7 +16,7 @@ def teacher_check(user):
 def TeacherHome(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 
 	request.session['inbox'] = {}
 	t_inbox = request.session['inbox']
@@ -143,7 +144,7 @@ def TeacherHome(request):
 def GoodDeeds(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 		
 	print(GoodDeed.objects.count())
 	for i in GoodDeed.objects.all():
@@ -251,7 +252,7 @@ def GoodDeeds(request):
 def Items(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 	context = {}
 	context["RewardsList"] = []
 	def maxrewards():
@@ -293,13 +294,9 @@ def Items(request):
 def TeacherSettings(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 	print(request.user.username)
 	user = request.user
-	test_user = User.objects.get(username=440131)
-	test_username = test_user.username
-	pword = test_user.password
-
 	if request.POST.get("usernamechange"):
 		p_1 = request.POST.get("password")
 		p_2 = request.POST.get("password_2")
@@ -311,8 +308,7 @@ def TeacherSettings(request):
 			print("test")		
 			if new_username != "":
 				user.username = new_username
-				user.save()
-			
+				user.save()			
 	if request.POST.get("passwordchange"):
 		p_1 = request.POST.get("password")
 		p_2 = request.POST.get("password_2")
@@ -324,23 +320,20 @@ def TeacherSettings(request):
 			if new_password != "":
 				user.set_password(new_password)
 				user.save()
-
 	return render(request, "TeacherSettings.html")
 
 @user_passes_test(teacher_check)
 def Requests(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 	#inbox = request.session['inbox']
 	#keys = sorted(inbox.keys(), reverse=True)
-
 	requests = Request.objects.all()
 	identifiers = []
 	for i in requests:
 		identifiers.append(i.identifier)
 	keys = sorted(identifiers, reverse=True)
-
 	context = {}
 	context["RequestKeys"] = []
 	context["Names"] = []
@@ -432,7 +425,7 @@ def Requests(request):
 def SpendRequests(request):
 	if request.GET.get("logout"):
 		logout(request)
-		return HttpResponseRedirect('http://127.0.0.1:8000/login')
+		return FirstPage(request)
 	spend_inbox = []
 	index_list = []
 	x = SpendRequest.objects.all()
